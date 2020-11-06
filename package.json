@@ -1,0 +1,24 @@
+{
+  "name": "secret-college",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.12.0",
+    "element-ui": "^2.14.0",
+    "nuxt": "^2.14.0",
+    "swiper": "^5.2.0",
+    "vue-awesome-swiper": "^4.1.1"
+  },
+  "devDependencies": {
+    "babel-plugin-component": "^1.1.1",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.0.3",
+    "scss-loader": "^0.0.1"
+  }
+}

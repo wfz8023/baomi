@@ -1,0 +1,237 @@
+@media only screen and (max-width : 1920px) and (min-width: 1024px){
+  html{
+    font-size: calc( 100vw / 19.2 );
+  }
+  body::-webkit-scrollbar{
+    width: 0;
+    background: none;
+  }
+  html::-webkit-scrollbar{
+    width: 0;
+    background: none;
+  }
+}
+@media only screen and (max-width : 1024px) and (min-width: 300px){
+  html{
+    font-size: calc( 100vw / 7.5 );
+  }
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+i{
+  font-size: inherit!important;
+}
+li{
+  list-style: none;
+}
+//水平垂直居中
+.center{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+//溢出省略
+//单行
+.one-ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+//多行 webkit内核或移动端
+.many-ellipsis{
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+//跨浏览器兼容
+.ellipsis{
+  position:relative;
+  //line-height: 1rem;
+  /* 3 times the line-height to show 3 lines */
+  //height: 4.2em;
+  overflow:hidden;
+}
+.ellipsis::after {
+  content: "...";
+  font-weight: bold;
+  position: absolute;
+  bottom: 2px;
+  right: 0;
+}
+
+//圆.
+.circle{
+  width: 6px;
+  height: 6px;
+  background: #333;
+  border-radius: 6px;
+}
+.flex_box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+//箭头
+.arrow{
+  width: 1rem;
+  height: .3rem;
+  border: 2px solid red;
+  border-radius: .3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  i{
+    font-size: 12px;
+    font-weight: bolder;
+    transform: scale(0.7) translateX(4px);
+    line-height: 1;
+  }
+}
+//简介 了解更多样式
+.red_no_border{
+  $height:.48rem;
+  background: #cb2525;
+  border: 0;
+  width: 1.38rem;
+  height: $height;
+  line-height: $height;
+}
+
+//大字体 标题部分
+.maxFont-title2{
+  font-size: .5rem;
+  line-height: .22rem;
+}
+//大字体 内容部分
+.maxFont-content{
+  font-size: .18rem;
+  line-height: .22rem;
+}
+
+//中字体 标题部分
+.middleFont-title-h2{
+  font-size: .28rem;
+  //line-height: .22rem;
+}
+.middleFont-title-h4 {
+  font-size: .3rem;
+  line-height: .42rem;
+}
+//中字体 标题部分
+.middleFont-title-h3{
+  font-size: .22rem;
+  //line-height: .22rem;
+}
+//中字体  内容部分
+.middleFont-bigger-content{
+  font-size: .2rem;
+  line-height: .3rem;
+}
+//中字体  内容部分
+.middleFont-content{
+  font-size: .18rem;
+  line-height: .3rem;
+}
+
+//小字体 标题部分
+.littleFont-title{
+  font-size: .3rem;
+  line-height: .2rem;
+}
+//最大字體
+.littleFont-max{
+  font-size: .42rem;
+}
+.littleFont-title2{
+  font-size: .28rem;
+}
+.littleFont-title-h2 {
+  font-size: .31rem;
+  line-height: normal;
+}
+.littleFont-title-h3{
+  font-size: .22rem;
+}
+.littleFont-footer-text{
+  font-size: .14rem!important;
+}
+//小字体 内容部分
+.littleFont-content{
+  font-size: .16rem;
+  line-height: .3rem;
+}
+
+//手机端
+@media only screen and (max-width : 1024px) and (min-width: 300px) {
+  .arrow i{
+    transform: scale(0.5);
+  }
+
+  //大字体 标题部分
+  .maxFont-title2{
+    font-size: .5rem;
+    line-height: .22rem;
+  }
+  //大字体 内容部分
+  .maxFont-content{
+    font-size: .18rem;
+    line-height: .22rem;
+  }
+
+  //中字体 标题部分
+  .middleFont-title-h2{
+    font-size: .28rem;
+    //line-height: .22rem;
+  }
+  .middleFont-title-h4 {
+    font-size: .3rem;
+    line-height: .42rem;
+  }
+  //中字体 标题部分
+  .middleFont-title-h3{
+    font-size: .22rem;
+  }
+  //中字体  内容部分
+  .middleFont-bigger-content{
+    font-size: .2rem;
+    line-height: .3rem;
+  }
+  //中字体  内容部分
+  .middleFont-content{
+    font-size: .18rem;
+    line-height: .3rem;
+  }
+
+
+  //小字体 标题部分
+  .littleFont-title{
+    font-size: .3rem;
+    line-height: .2rem;
+  }
+
+  .littleFont-title2{
+    font-size: .3rem;
+  }
+  .littleFont-title-h2 {
+    font-size: .31rem;
+    line-height: normal;
+  }
+  .littleFont-title-h3{
+    font-size: .29rem;
+  }
+  .littleFont-footer-text{
+    font-size: .14rem;
+    //line-height: .32rem;
+  }
+  //小字体 内容部分
+  .littleFont-content{
+    font-size: .26rem;
+    line-height: .4rem;
+  }
+}
