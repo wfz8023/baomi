@@ -1,199 +1,251 @@
 <template>
-  <section class="shutters">
-    <div
-      v-for="shutter in shutters"
-      :key="shutter.id"
-      class="shutter_wrap"
-      @mouseover="switchShutter(shutter.id)"
-    >
-      <div :class="[ activeShutters === shutter.id ? 'active' : 'default']">
-        <div class="flex_box" v-if="activeShutters === shutter.id">
-          <h4 :class="$store.state.$fontClass + '-title-h3'">精品讲座课程</h4>
-          <p class="many-ellipsis">
-            保密是一门科学，具有自身的规律和特点。随着社会主义市场经济深入发展和信息化建设的快速推进，保密教育保密是一门科学，具有自身的规律和特点。
-          </p>
-          <nuxt-link to="/" class="arrow">
-            <i class="iconfont icon-changjiantou"/>
-          </nuxt-link>
+<section class="shutters" v-if="classShutters[classIndex].children.length > 0">
+    <div v-for="shutter in shutters" :key="shutter && shutter.id" class="shutter_wrap" @mouseover="switchShutter(shutter)">
+        <div v-if="shutter" :class="[ shutter && activeShutters === shutter.id ? 'active' : 'default']">
+            <div class="flex_box" v-if="activeShutters === shutter.id">
+                <h4 :class="$store.state.$fontClass + '-title-h3'">{{ shutter && shutter.title }}</h4>
+                <p class="many-ellipsis">
+                    {{ shutter && shutter.desc }}
+                </p>
+                <nuxt-link :to="{name: type ? 'resource-classes-id' : 'resource-lecture-id', params:{ id: shutter && shutter.id }}" class="arrow">
+                    <i class="iconfont icon-changjiantou" />
+                </nuxt-link>
+            </div>
+            <div v-else>
+                <!--          <img src="../static/images/podium.png" alt="">-->
+                <span class="icon_wrap">
+                    <i :class="['iconfont', icon]" />
+                </span>
+                <p class="title_shutter">{{ shutter && shutter.title }}</p>
+            </div>
         </div>
-        <div v-else >
-          <img src="../static/images/podium.png" alt="">
-          <p>精品课程讲座课题</p>
-        </div>
-      </div>
     </div>
 
-    <swiper
-      class="mobile_show"
-      ref="mySwiper"
-      :options="swiperOptions"
-    >
-      <swiper-slide class="swiper-slide" v-for="shutter in shutters" :key="shutter.id">
-        <div class="active">
-          <h4>精品讲座课程</h4>
-          <p class="many-ellipsis">
-            保密是一门科学，具有自身的规律和特点。随着社会主义市场经济深入发展和信息化建设的快速推进，保密教育保密是一门科学，具有自身的规律和特点。
-          </p>
-          <nuxt-link to="/" class="iconfont">
-            <img src="../static/images/arrow.png" alt="">
-          </nuxt-link>
-        </div>
-      </swiper-slide>
-      <div class="swiper-pagination" slot="pagination"></div>
+    <swiper v-if="shutters" class="mobile_show" ref="mySwiper" :options="swiperOptions">
+        <swiper-slide class="swiper-slide" v-for="shutter in shutters" :key="shutter && shutter.id">
+            <div class="active">
+                <h4>{{ shutter && shutter.title }}</h4>
+                <p class="many-ellipsis">
+                    {{ shutter && shutter.desc }}
+                </p>
+                <nuxt-link :to="{name:  type ? 'resource-classes-id' : 'resource-lecture-id', params:{ id: shutter && shutter.id }}" class="iconfont">
+                    <img src="../static/images/arrow.png" alt="">
+                </nuxt-link>
+            </div>
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
     </swiper>
-
-  </section>
+</section>
 </template>
 
 <script>
-import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper'
+import {
+    Swiper,
+    SwiperSlide,
+    directive
+} from 'vue-awesome-swiper'
 
 export default {
-  name: "resource-shutter",
-  components:{Swiper, SwiperSlide},
-  directives: {
-    swiper: directive
-  },
-  head() {
-    return {
-      title: '首页'
-    }
-  },
-  data(){
-    return {
-      activeShutters: 1,
-      shutters:[
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-      ],
-      swiperOptions:{
-        loop: true,
-        autoplay: {
-          delay: 1000,
-          disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          dynamicBullets: true
-          // clickable: true,
+    name: "resource-shutter",
+    components: {
+        Swiper,
+        SwiperSlide
+    },
+    directives: {
+        swiper: directive
+    },
+    props: [
+        'classShutters',
+        'icon',
+        'backgroundPath',
+        'resourceId',
+        'type'
+    ],
+    head() {
+        return {
+            title: '首页'
         }
-      }
-    }
-  },
-  created() {
+    },
+    data() {
+        return {
+            activeShutters: 1,
+            shutters: [],
+            swiperOptions: {
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    dynamicBullets: true
+                }
+            },
+            classIndex: -1
+        }
+    },
+    created() {
+        // console.log('sssssssssssssss', this.type);
+        const {
+            classShutters,
+            resourceId
+        } = this;
+        const index = classShutters.findIndex(item => resourceId === item.id);
+        this.classIndex = index;
+        // this.shutters = this.classShutters[index].children;
+        // console.log('当前课程数组===>>>>>', index, this.shutters)
+        // // resourceId
+        // this.activeShutters = this.classShutters[index].children[0].id
+        if (index < 0) return
+        this.shutters = classShutters[index].children;
+        // console.log('当前课程数组===>>>>>', index, this.classShutters)
+        // resourceId
+        // console.log('当前课程数组b报错信息', this.classShutters[index])
+        this.activeShutters = this.classShutters[index].children[0].id
 
-  },
-  methods:{
-    switchShutter(id){
-      this.activeShutters = id
+        this.shutters.length = 4;
+    },
+    watch: {
+        resourceId(newVal) {
+            const {
+                classShutters,
+                resourceId
+            } = this;
+
+            const index = classShutters && classShutters.findIndex(item => resourceId === item.id);
+
+            this.shutters = classShutters[index].children;
+            // console.log('watch===>>>>>', index, this.shutters)
+            // resourceId
+            if (classShutters[index].children.length < 1) return
+            this.activeShutters = classShutters[index].children[0].id
+
+            this.shutters.length = 4;
+        }
+    },
+    methods: {
+        switchShutter(shutter) {
+            this.activeShutters = shutter && shutter.id
+        }
     }
-  }
 
 }
 </script>
 
 <style lang="scss" scoped>
 $shuttersHeight: 3.28rem;
+
 //课程资源百叶窗
-.shutters{
-  width: 100%;
-  height: 3.78rem;
-  border: 1px solid #ccc;
-  border-top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  font-size: .18rem;
-  padding: 0 .17rem;
-  .mobile_show{
-    display: none;
-  }
-  .default{
-    width: 1.59rem;
-    height: $shuttersHeight;
-    background: url("../static/images/close.png") no-repeat;
-    background-size: cover;
-    padding: 0 .26rem;
-    transition: width 500ms ease-in-out;
-    color: #333;
+.shutters {
+    width: 100%;
+    height: 3.78rem;
+    border: 1px solid #ccc;
+    border-top: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    img{
-      margin-bottom: .22rem;
-    }
-  }
-  .active{
-    width: 5.67rem;
-    height: $shuttersHeight;
-    background-size: cover;
-    background: url("../static/images/right_open1.png") no-repeat;
-    padding: 0 .64rem;
-    text-align: center;
-    align-items: center;
-    transition: width 500ms ease-in-out;
-    display: flex;
-    margin: 0 auto;
-    flex-direction: column;
-    align-content: space-between;
-    color: #fff;
     justify-content: space-between;
-    .flex_box{
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
+    text-align: center;
+    font-size: .18rem;
+    padding: 0 .17rem;
+
+    .mobile_show {
+        display: none;
     }
-    h4{
-      line-height: .5rem;
+
+    .default {
+        width: 1.59rem;
+        height: $shuttersHeight;
+        background: url("../static/images/close.png") no-repeat;
+        background-size: cover;
+        padding: 0 .26rem;
+        transition: width 500ms ease-in-out;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .title_shutter {
+            color: #333;
+        }
+
+        .icon_wrap {
+            width: .4rem;
+            height: .5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+
+            i {
+                color: #cb2525;
+                font-size: .8rem !important;
+            }
+        }
     }
-    img{
-      margin: 0;
+
+    .active {
+        width: 5.67rem;
+        height: $shuttersHeight;
+        background-size: cover;
+        background: url("../static/images/right_open1.png") no-repeat center;
+        background-size: cover;
+        padding: 0 .64rem;
+        text-align: center;
+        align-items: center;
+        transition: width 500ms ease-in-out;
+        display: flex;
+        margin: 0 auto;
+        flex-direction: column;
+        align-content: space-between;
+        color: #fff;
+        justify-content: space-between;
+
+        .flex_box,
+        .a_wrap {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        h4 {
+            line-height: .5rem;
+        }
+
+        img {
+            margin: 0;
+        }
+
+        p {
+            margin-bottom: .4rem;
+            overflow: hidden;
+        }
+
+        .arrow {
+            border: 2px solid #fff;
+            color: #fff;
+        }
     }
-    p{
-      margin-bottom: .4rem;
-      overflow: hidden;
+
+    @media only screen and (max-width : 1024px) and (min-width: 300px) {
+        .mobile_show {
+            display: block;
+        }
+
+        .shutter_wrap {
+            display: none;
+        }
+
+        .active {
+            width: 6.16rem;
+            padding: .5rem .64rem .3rem .64rem;
+
+            //padding-bottom: 0;
+            .iconfont {
+                width: 1.1rem;
+                height: .4rem;
+            }
+        }
     }
-    .arrow{
-      border: 2px solid #fff;
-      color: #fff;
-    }
-    //.iconfont{
-    //  width: 1rem;
-    //  height: .25rem;
-    //  border: 2px solid #fff;
-    //  border-radius: .25rem;
-    //  display: flex;
-    //  align-items: center;
-    //  justify-content: center;
-    //  img{
-    //    width: .4rem;
-    //    height: .1rem;
-    //    margin: 0 auto;
-    //  }
-    //}
-  }
-  @media only screen and (max-width : 1024px) and (min-width: 300px) {
-    .mobile_show{
-      display: block;
-    }
-    .shutter_wrap{
-      display: none;
-    }
-    .active{
-      width: 6.16rem;
-      padding: .64rem;
-      padding-bottom: 0;
-      h4{
-      }
-      .iconfont{
-        width: 1.1rem;
-        height: .4rem;
-      }
-    }
-  }
 }
 </style>

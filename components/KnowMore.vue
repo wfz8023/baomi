@@ -1,16 +1,16 @@
 <template>
-  <a
+  <nuxt-link
     :class="[className]"
-    :href="href"
+    :to="{name, params}"
   >
     {{ title }}
-  </a>
+  </nuxt-link>
 </template>
 
 <script>
 export default {
   name: "KnowMore",
-  props:['href', 'title', 'className'],
+  props:['href', 'title', 'className', 'name', 'params'],
 }
 </script>
 
@@ -28,3 +28,4 @@ a{
   line-height: $linkHeight;
 }
 </style>
+

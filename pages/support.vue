@@ -1,7 +1,11 @@
+<<<<<<< .mine
 <template>
   <div class="support">
     <page-nav
       :nav-list="supportLinkNav"
+      :title = 'title'
+      :background-path = 'bannerImg'
+      :en-title = "enTitle"
     ></page-nav>
   </div>
 </template>
@@ -12,6 +16,17 @@ export default {
   name: "support",
   components:{
     PageNav
+  },
+  async asyncData({ $axios, env }){
+    const { data } = await $axios.get('/api/support/location');
+    const banner = data.result.index;
+    const { banner_img, banner_title_cn, banner_title_en } = banner;
+
+    return {
+      bannerImg: env.BASE_URL + banner_img.url,
+      title: banner_title_cn,
+      enTitle: banner_title_en
+    }
   },
   data(){
     return{
@@ -25,7 +40,7 @@ export default {
           childName: 'support-condition'
         },
         {
-          name: '招贤纳士',
+          name: '食宿环境',
           childName: 'support-environment'
         },
         {
@@ -34,6 +49,6 @@ export default {
         }
       ]
     }
-  }
+  },
 }
 </script>

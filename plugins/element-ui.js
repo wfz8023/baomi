@@ -1,12 +1,13 @@
-// element-ui.js
 import Vue from 'vue'
 import {
   Pagination,
+  Tabs,
+  TabPane
 } from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 
 const components = [
-  Pagination
+  Pagination, Tabs, TabPane
 ];
 
 const Element = {
