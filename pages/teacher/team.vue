@@ -6,7 +6,7 @@
           :id="item.id" v-for="item in list"
           :key="item.id" link_title="查看详情"
           class-name="item_style"
-          :pic-path="item.img.url"
+          :pic-path="item.img"
           :title="item.title"
           :summary="item.desc"
           pic-height="2.7rem"
@@ -43,11 +43,11 @@ export default {
 
         console.log('===>>>>>>>>>', list)
 
-        list.map(item => {
-            item.img = typeof item.img === "string" && JSON.parse(item.img);
-            item.img.url = env.BASE_URL + item.img.url;
-            return item
-        })
+        // list.map(item => {
+        //     item.img = typeof item.img === "string" && JSON.parse(item.img);
+        //     item.img.url = env.BASE_URL + item.img.url;
+        //     return item
+        // })
         return {
             psize,
             total,

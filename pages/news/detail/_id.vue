@@ -9,7 +9,7 @@
                 <div class="article_msg ">
                     <p>
                         <i :class="[$store.state.$fontClass + '-content', 'iconfont', 'icon-shijian']" />
-                        <span>2020-09-30</span>
+                        <span>{{ timestampToTime(created_at) }}</span>
                     </p>
                     <p>
                         <i class="iconfont icon-guankanshezhi" />
@@ -72,7 +72,7 @@ export default {
         const {
             data
         } = await $axios.get(`/api/news/info/${params.id}`);
-
+        console.log('data===>>>', data)
         const {
             author,
             content,
@@ -91,7 +91,7 @@ export default {
         if (next) {
             next.picture = env.BASE_URL + next.picture;
         }
-
+        console.log()
         return {
             author,
             content,
@@ -105,11 +105,20 @@ export default {
     key(route) {
         return route.fullPath
     },
-    async created() {
-        // const {
-        //     data
-        // } = await this.$axios.get(`/api/news/info/${this.$route.params.id}`);
-        // console.log(data)
+    methods:{
+      timestampToTime(timestamp) {
+        let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        let Y = date.getFullYear() + '-';
+        let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        let D = date.getDate() + ' ';
+        let h = date.getHours() + ':';
+        let m = date.getMinutes() + ':';
+        let s = date.getSeconds();
+        M = M < 10 ? '0' + M : M;
+        D = D < 10 ? '0' + D : D;
+
+        return Y + M + D;
+      },
     }
 }
 </script>

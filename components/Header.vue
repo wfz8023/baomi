@@ -4,6 +4,7 @@
     <a href="/">
         <!--      <img :src="routePath !== 'index'? require('~/static/images/logo.png') : require('~/static/images/index_logo.png')" alt="" class="logo">-->
         <img :src="routePath !== 'index'? otherLogo : topLogo" alt="" class="logo">
+<!--        <img :src="routePath !== 'index'? $store.state.config.top_logo_other.url : $store.state.config.top_logo_home.url" :alt="$store.state.config.top_logo_other.alt" class="logo">-->
     </a>
     <i :class="['iconfont',  'menu', isShowMenu ? 'icon-cuohao' : 'icon-caidan' ]" :style="{ 'color': routePath !== 'index' ? '#003a8f' : '#fff' }" @click="showPhoneMenu"></i>
     <nav :class="{'menu_active': isShowMenu}">
@@ -38,17 +39,17 @@ export default {
         'topLogo',
         'otherLogo'
     ],
-    data() {
+  created() {
+    // console.log(this.$store.state.config)
+  },
+  data() {
         return {
             isShowMenu: false,
             headerBackground: this.routePath !== 'index',
             routePath: this.$route.name,
             searchVal: '',
-            isShowSearch: false
+            isShowSearch: false,
         }
-    },
-    created() {
-        console.log('topLogo', this.topLogo, 'otherLogo', this.otherLogo)
     },
     watch: {
         $route() {
@@ -62,16 +63,16 @@ export default {
         },
         // 显示搜索
         showSearch(flag) {
-            console.log('showSearch', flag)
+            // console.log('showSearch', flag)
             this.isShowSearch = flag
-            console.log(this.isShowSearch)
+            // console.log(this.isShowSearch)
         },
         // 搜索
         goSearch() {
             if (!this.searchVal) {
                 return
             }
-            console.log(11111111)
+            // console.log(11111111)
             window.location.href = `/search/${this.searchVal}`
         }
     }

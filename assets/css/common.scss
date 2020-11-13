@@ -1,6 +1,10 @@
 html{
   font-size: calc( 100vw / 19.2 );
 }
+body{
+  width: 100vw;
+  overflow-x: hidden;
+}
 
 @media only screen and (max-width : 2560px) and (min-width: 1024px){
   html{

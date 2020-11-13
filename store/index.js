@@ -22,7 +22,7 @@ const store = () => new Vuex.Store({
     //改变字体大小
     changeFontSize(state, index) {
       state.$fontClass = Vue.prototype.$changeFontClass[index]
-      // console.log(index, state.$fontClass)
+
     },
       // 网站加载完毕
       loaded(state) {
@@ -51,7 +51,7 @@ const store = () => new Vuex.Store({
           const config = {
             ...res.data.data,
           }
-          console.log(res)
+          // console.log(res)
           store.commit('setConfig', config)
         } else {
           console.log('%c 请求失败：' + res.data.result, 'color:#ff0000;')

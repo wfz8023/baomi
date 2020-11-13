@@ -61,7 +61,7 @@ dl{
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      width: 100%;
+      width: 80%;
       text-align: center;
       color: #fff;
       h2{
@@ -202,6 +202,9 @@ dl:hover{
     width: 6.9rem;
     dd{
       height: 3.7rem;
+    }
+    dt h3{
+      line-height: 1.3;
     }
     dt .many-ellipsis{
       height: .8rem;

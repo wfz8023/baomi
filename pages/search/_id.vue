@@ -6,42 +6,18 @@
         <div class="list-wrapper">
             <ul class="list-wrap" v-if="activeIndex === 0 || activeIndex === 2">
                 <li class="list-item" v-for="(item, index) in ArrList" :key="index">
-                    <nuxt-link class="list-item-link" :to="{name: activeIndex === 0 ? 'news-detail-id' : 'teacher-info-id'}">
+                    <nuxt-link class="list-item-link" :to="{name: activeIndex === 0 ? 'news-detail-id' : 'teacher-info-id', params:{ id : item.id} }">
                         <span class="list-item-title ellipsis-1">{{item.title}}</span>
                         <span class="list-item-date">{{timestampToYear(item.created_at)}}</span>
                     </nuxt-link>
                 </li>
-                <!-- <li class="list-item">
-                    <a class="list-item-link" href="#">
-                        <span class="list-item-title ellipsis-1">用爱心点燃梦想 让梦想照进现实北汽集团获助残公益荣誉证书</span>
-                        <span class="list-item-date">2020-02-05</span>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a class="list-item-link" href="#">
-                        <span class="list-item-title ellipsis-1">用爱心点燃梦想 让梦想照进现实北汽集团获助残公益荣誉证书</span>
-                        <span class="list-item-date">2020-02-05</span>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a class="list-item-link" href="#">
-                        <span class="list-item-title ellipsis-1">用爱心点燃梦想 让梦想照进现实北汽集团获助残公益荣誉证书</span>
-                        <span class="list-item-date">2020-02-05</span>
-                    </a>
-                </li>
-                <li class="list-item">
-                    <a class="list-item-link" href="#">
-                        <span class="list-item-title ellipsis-1">用爱心点燃梦想 让梦想照进现实北汽集团获助残公益荣誉证书</span>
-                        <span class="list-item-date">2020-02-05</span>
-                    </a>
-                </li> -->
             </ul>
             <ul v-if="activeIndex === 1" class="list-wrap">
                 <div v-if="resourceList[0]">
                     <li class="list-item" v-for="(item, index) in resourceList[0]" :key="'0'+index">
                         <nuxt-link class="list-item-link" :to="{ name: 'resource-lecture-id', params:{ id : item.id} }">
                             <span class="list-item-title ellipsis-1">{{item.title}}</span>
-                            <span class="list-item-date">{{timestampToYear(item.created_at)}}</span>
+                            <span class="list-item-date">{{timestampToYear(item.created_at)}}{{item.id}}</span>
                         </nuxt-link>
                     </li>
                 </div>
@@ -92,18 +68,20 @@ export default {
         env,
         params
     }) {
-        console.log(params)
         const {
-            data //
-        } = await $axios.post(`/api/search`, {
+            data
+        } = await $axios.post('/api/search', {
             keywords: params.id
         });
-        const {
+      console.log(data)
+
+      const {
             news,
             resource,
             teachers
         } = data.result;
-        // console.log('搜索页面', data)
+        console.log('搜索页面', data)
+
         const newsLen = news.length;
         const resourceLen = resource.chair.length + resource.classes.length;
         const teachersLen = teachers.team.length;
@@ -115,7 +93,7 @@ export default {
             1: resource.classes
         };
 
-        console.log('resourcelist--===>>>>>', resourceList)
+        // console.log('resourcelist--===>>>>>', data)
         return {
             newsList,
             resourceList,
@@ -129,18 +107,10 @@ export default {
             id: params.id
         }
     },
-    data() {
-        return {
-            // ArrList: []
+    data(){
+        return{
+          ArrList:[]
         }
-    },
-    async created() {
-        const {
-            data //
-        } = await this.$axios.post(`/api/search`, {
-            keywords: this.id
-        });
-        console.log('搜索页面', data)
     },
     methods: {
         changeSearchList(index) {

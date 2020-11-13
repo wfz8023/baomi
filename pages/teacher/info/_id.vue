@@ -9,21 +9,21 @@
                 <div class="article_msg ">
                     <p>
                         <i :class="[$store.state.$fontClass + '-content', 'iconfont', 'icon-shijian']" />
-                        <span>2020-09-30</span>
+                        <span>{{ timestampToTime(created_at) }}</span>
                     </p>
                 </div>
             </div>
             <section class="content" v-html="content"></section>
         </article>
         <section class="turn_page">
-            <nuxt-link v-if="last" :to="{name: 'teacher-info-id', params:{ id: last.id }}">
+            <nuxt-link v-if="last" :to="{name: 'teacher-info-id', params:{ id: last && last.id }}">
                 <div class="turn_default">
                     <div>
                         <span>上一篇</span>
                         <i />
-                        <p class="one-ellipsis">{{ last.title }}</p>
+                        <p class="one-ellipsis">{{ last && last.title }}</p>
                     </div>
-                    <img :src="last.picture" alt="">
+                    <img :src="last && last.img" alt="">
                 </div>
             </nuxt-link>
             <div class="turn_default no_content" v-if="!last">
@@ -31,14 +31,14 @@
                 <i />
                 <p class="one-ellipsis">暂无内容</p>
             </div>
-            <nuxt-link v-if="next" :to="{name: 'teacher-info-id', params:{ id: next.id }}">
+            <nuxt-link v-if="next" :to="{name: 'teacher-info-id', params:{ id: next && next.id }}">
                 <div class="turn_next turn_default">
                     <div>
                         <span>下一篇</span>
                         <i />
-                        <p class="one-ellipsis">{{ next.title }}</p>
+                        <p class="one-ellipsis">{{ next && next.title }}</p>
                     </div>
-                    <img :src="next.picture" alt="">
+                    <img :src="next && next.img" alt="">
                 </div>
             </nuxt-link>
             <div class="turn_default no_content" v-if="!next">
@@ -54,6 +54,7 @@
 <script>
 export default {
     name: "teacher-info-id",
+    scrollToTop: true,
     async asyncData({
         $axios,
         env,
@@ -62,24 +63,25 @@ export default {
         const {
             data
         } = await $axios.get(`/api/teachers/team/info/${params.id}`);
-        console.log(data.result)
         const {
             author,
             content,
             created_at,
             read_num,
             title
-        } = data.result.data;
+        } = data.result.data[0];
+      // console.log('teacher==>>>>', data.result.data[0])
 
         let {
             last,
             next
         } = data.result.page;
+      // console.log(data.result.page)
         if (last) {
-            last.picture = env.BASE_URL + last.picture;
+            last.img = env.BASE_URL + last.img;
         }
         if (next) {
-            next.picture = env.BASE_URL + next.picture;
+            next.img = env.BASE_URL + next.img;
         }
 
         return {
@@ -92,13 +94,21 @@ export default {
             next
         }
     },
-    async created() {
-        // const { data } = await this.$axios.get(`/api/teachers/info/${this.$route.params.id}`);
-        const {
-            data
-        } = await this.$axios.get(`/api/teachers/team/info/${this.$route.params.id}`);
-        console.log(data)
-    }
+  methods:{
+    timestampToTime(timestamp) {
+      let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      let Y = date.getFullYear() + '-';
+      let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      let D = date.getDate() + ' ';
+      let h = date.getHours() + ':';
+      let m = date.getMinutes() + ':';
+      let s = date.getSeconds();
+      M = M < 10 ? '0' + M : M;
+      D = D < 10 ? '0' + D : D;
+
+      return Y + M + D;
+    },
+  }
 }
 </script>
 

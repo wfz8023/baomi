@@ -1,9 +1,13 @@
 <template>
 <section class="shutters" v-if="classShutters[classIndex].children.length > 0">
     <div v-for="shutter in shutters" :key="shutter && shutter.id" class="shutter_wrap" @mouseover="switchShutter(shutter)">
-        <div v-if="shutter" :class="[ shutter && activeShutters === shutter.id ? 'active' : 'default']">
-            <div class="flex_box" v-if="activeShutters === shutter.id">
-                <h4 :class="$store.state.$fontClass + '-title-h3'">{{ shutter && shutter.title }}</h4>
+        <div
+          v-if="shutter"
+          :class="[ shutter && activeShutters === shutter.id ? 'active' : 'default']"
+          :style="{ backgroundImage: `url(${ shutter && activeShutters === shutter.id ? shutter.img.url : imgClose })` }"
+        >
+          <div class="flex_box" v-if="activeShutters === shutter.id">
+                <h4 :class="$store.state.$fontClass + '-title-h4'">{{ shutter && shutter.title }}</h4>
                 <p class="many-ellipsis">
                     {{ shutter && shutter.desc }}
                 </p>
@@ -20,21 +24,25 @@
             </div>
         </div>
     </div>
-
-    <swiper v-if="shutters" class="mobile_show" ref="mySwiper" :options="swiperOptions">
+    <client-only>
+      <swiper v-if="shutters" class="mobile_show" ref="mySwiper" :options="swiperOptions">
         <swiper-slide class="swiper-slide" v-for="shutter in shutters" :key="shutter && shutter.id">
-            <div class="active">
-                <h4>{{ shutter && shutter.title }}</h4>
-                <p class="many-ellipsis">
-                    {{ shutter && shutter.desc }}
-                </p>
-                <nuxt-link :to="{name:  type ? 'resource-classes-id' : 'resource-lecture-id', params:{ id: shutter && shutter.id }}" class="iconfont">
-                    <img src="../static/images/arrow.png" alt="">
-                </nuxt-link>
-            </div>
+          <div
+            class="active"
+            :style="{backgroundImage: `url(${shutter && shutter.img.url})`}"
+          >
+            <h4 :class="[$store.state.$fontClass + '-title-h4', 'one-ellipsis']">{{ shutter && shutter.title }}</h4>
+            <p class="many-ellipsis">
+              {{ shutter && shutter.desc }}
+            </p>
+            <nuxt-link :to="{name:  type ? 'resource-classes-id' : 'resource-lecture-id', params:{ id: shutter && shutter.id }}" class="iconfont">
+              <img src="../static/images/arrow.png" alt="">
+            </nuxt-link>
+          </div>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
-    </swiper>
+      </swiper>
+    </client-only>
 </section>
 </template>
 
@@ -59,51 +67,48 @@ export default {
         'icon',
         'backgroundPath',
         'resourceId',
-        'type'
+        'type',
+        'homeBg'
     ],
-    head() {
-        return {
-            title: '首页'
-        }
-    },
+    // head() {
+    //     return {
+    //         title: '首页'
+    //     }
+    // },
     data() {
         return {
             activeShutters: 1,
             shutters: [],
             swiperOptions: {
                 loop: true,
-                autoplay: {
-                    delay: 4000,
-                    disableOnInteraction: false,
-                },
+                // autoplay: {
+                //     delay: 4000,
+                //     disableOnInteraction: false,
+                // },
                 pagination: {
                     el: '.swiper-pagination',
                     dynamicBullets: true
                 }
             },
-            classIndex: -1
+            classIndex: -1,
+            imgClose: require('../static/images/close.png')
         }
     },
     created() {
-        // console.log('sssssssssssssss', this.type);
         const {
             classShutters,
             resourceId
         } = this;
         const index = classShutters.findIndex(item => resourceId === item.id);
         this.classIndex = index;
-        // this.shutters = this.classShutters[index].children;
-        // console.log('当前课程数组===>>>>>', index, this.shutters)
-        // // resourceId
-        // this.activeShutters = this.classShutters[index].children[0].id
+
         if (index < 0) return
         this.shutters = classShutters[index].children;
-        // console.log('当前课程数组===>>>>>', index, this.classShutters)
-        // resourceId
-        // console.log('当前课程数组b报错信息', this.classShutters[index])
-        this.activeShutters = this.classShutters[index].children[0].id
-
-        this.shutters.length = 4;
+        // console.log(index, classShutters)
+        this.activeShutters = classShutters[index].children ? classShutters[index].children[0].id : 0
+        // if ()
+        this.shutters.length = this.shutters.length > 4 ? 4 : this.shutters.length;
+        console.log(this.shutters)
     },
     watch: {
         resourceId(newVal) {
@@ -155,7 +160,9 @@ $shuttersHeight: 3.28rem;
     .default {
         width: 1.59rem;
         height: $shuttersHeight;
-        background: url("../static/images/close.png") no-repeat;
+        backgroundImage: url("../static/images/close.png");
+        background-position: center;
+        background-repeat: no-repeat;
         background-size: cover;
         padding: 0 .26rem;
         transition: width 500ms ease-in-out;
@@ -210,6 +217,7 @@ $shuttersHeight: 3.28rem;
 
         h4 {
             line-height: .5rem;
+          width: 80%;
         }
 
         img {

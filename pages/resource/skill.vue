@@ -322,7 +322,7 @@ $contentWidth: 14.6rem;
 @media only screen and (max-width : 1024px) and (min-width: 300px) {
     .skill {
         width: 6.9rem;
-
+        //box-shadow: 0 10px 0.3rem #f2efef;
         .title {
             width: 100%;
             text-align: center;
@@ -360,7 +360,7 @@ $contentWidth: 14.6rem;
             height: 14.5rem;
 
             .bottom_background {
-                position: no-set;
+                //position: no-set;
                 flex-wrap: wrap;
 
                 section {
@@ -376,5 +376,8 @@ $contentWidth: 14.6rem;
             }
         }
     }
+  .skill .can_do .bottom_background section{
+    box-shadow: 0 10px 0.3rem #f2efef;
+  }
 }
 </style>

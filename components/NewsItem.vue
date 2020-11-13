@@ -34,9 +34,7 @@ export default {
         'id',
         'linkMsg'
     ],
-    created() {
-        console.log(this.linkMsg ? this.linkMsg.name : 'news-detail-id')
-    }
+
 }
 </script>
 

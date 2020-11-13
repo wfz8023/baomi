@@ -15,8 +15,8 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    titleTemplate: '%s',
-    // title: '浙江保密学院培训中心',
+    // titleTemplate: '%s',
+    title: '浙江保密学院培训中心',
     meta: [
       { charset: 'utf-8' },
       /*优先使用 IE 最新版本和 Chrome*/
@@ -26,7 +26,7 @@ export default {
       {
         hid: "keywords",
         name: "keywords",
-        content: ` `
+        content: ''
       },
     ],
     link: [
@@ -118,8 +118,8 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    vendor: ['axios', 'element-ui'],
     //element-ui按需加载
-    vendor: ['axios'],
     babel: {
       "plugins": [
         [

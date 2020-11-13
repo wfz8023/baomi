@@ -4,34 +4,33 @@
     <p class="summary">配有150间标准住宿环境，可支撑300名学员的住宿要求，并提供独立的学员就餐环境，构建一流的食宿环境。</p>
     <div class="decoration" />
     <section class="environment_swiper">
-        <!-- <client-only> -->
-        <swiper class="swiper environment_swiper_top" ref="envSwiperTop" :options="envSwiperOptionTop">
-            <swiper-slide class="swiper-slide" v-for="(item, index) in environmentList" :key="index">
-                <div class="condition_item">
-                    <img :src="item.img.url" :alt="item.img.alt">
-                </div>
-            </swiper-slide>
-            <div class="swiper-button-prev1 turn" slot="button-prev">
-                <i class="iconfont icon-left-arrow" />
-            </div>
-            <div class="swiper-button-next1 turn" slot="button-next">
-                <i class="iconfont icon-left-arrow" />
-            </div>
-
-        </swiper>
-        <!-- </client-only> -->
          <client-only>
-        <swiper class="swiper gallery-thumbs" v-swiper="envSwiperOptionThumbs" ref="envSwiperThumbs" :options="envSwiperOptionThumbs" v-if="environmentList.length < 4">
-            <swiper-slide class="swiper-slide" v-for="(item, index) in environmentList" :key="index">
-                <img :src="item.img.url" alt="">
-            </swiper-slide>
-            <div class="swiper-button-prev turn" slot="button-prev">
-                <i class="iconfont icon-left-arrow" />
-            </div>
-            <div class="swiper-button-next turn" slot="button-next">
-                <i class="iconfont icon-left-arrow" />
-            </div>
-        </swiper>
+            <swiper class="swiper environment_swiper_top" ref="envSwiperTop" :options="envSwiperOptionTop">
+                <swiper-slide class="swiper-slide" v-for="(item, index) in environmentList" :key="index">
+                    <div class="condition_item">
+                        <img :src="item.img" :alt="item.img">
+                    </div>
+                </swiper-slide>
+                <div class="swiper-button-prev1 turn" slot="button-prev">
+                    <i class="iconfont icon-left-arrow" />
+                </div>
+                <div class="swiper-button-next1 turn" slot="button-next">
+                    <i class="iconfont icon-left-arrow" />
+                </div>
+            </swiper>
+         </client-only>
+         <client-only>
+            <swiper class="swiper gallery-thumbs" ref="envSwiperThumbs" :options="envSwiperOptionThumbs" v-if="environmentList.length < 4">
+                <swiper-slide class="swiper-slide" v-for="(item, index) in environmentList" :key="index">
+                    <img :src="item.img" alt="">
+                </swiper-slide>
+                <div class="swiper-button-prev turn" slot="button-prev">
+                    <i class="iconfont icon-left-arrow" />
+                </div>
+                <div class="swiper-button-next turn" slot="button-next">
+                    <i class="iconfont icon-left-arrow" />
+                </div>
+            </swiper>
          </client-only>
     </section>
 </div> <!-- swiper2 Thumbs 下方缩略图-->
@@ -52,7 +51,6 @@ export default {
     directives: {
         swiper: directive
     },
-
     async asyncData({
         $axios,
         env
@@ -67,10 +65,10 @@ export default {
             keyword
         } = data.result.data;
         let environmentList = list;
-        environmentList.map(item => {
-            item.img.url = env.BASE_URL + item.img.url
-            return item
-        })
+        // environmentList.map(item => {
+        //     item.img.url = env.BASE_URL + item.img.url
+        //     return item
+        // })
         // console.log('asyncData', environmentList)
         return {
             title: seo_t,
@@ -80,6 +78,9 @@ export default {
     },
     data() {
         return {
+          envSwiperOptionTop:{},
+          envSwiperOptionThumbs:{}
+/*
             envSwiperOptionTop: {
                 loop: true,
                 loopedSlides: 5,
@@ -95,7 +96,6 @@ export default {
                 slidesPerView: 3,
                 // slidesPerGroup: 1,
                 spaceBetween: 30,
-                // touchRatio: 0.2,
                 //点击切换
                 slideToClickedSlide: true,
                 centeredSlides: true,
@@ -109,16 +109,46 @@ export default {
                     prevEl: '.swiper-button-prev'
                 }
             }
+*/
         }
     },
     mounted() {
-        this.$nextTick(() => {
-            const swiperTop = this.$refs.envSwiperTop.$swiper
-            const swiperThumbs = this.$refs.envSwiperThumbs.$swiper
+      this.envSwiperOptionTop= {
+        loop: true,
+          loopedSlides: 7,
+          navigation: {
+            nextEl: '.swiper-button-next1',
+            prevEl: '.swiper-button-prev1'
+          }
 
-            swiperTop.controller.control = swiperThumbs
-            swiperThumbs.controller.control = swiperTop
-        })
+      }
+      this.envSwiperOptionThumbs= {
+        loop: true,
+        loopedSlides: 7,
+        slidesPerView: 3,
+        slidesPerGroup: 1,
+        spaceBetween: 30,
+        //点击切换
+        slideToClickedSlide: true,
+        centeredSlides: true,
+        touchRatio: 0.2,
+        pagination: {
+          el: '.swiper-pagination'
+            // dynamicBullets: true
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      }
+
+      this.$nextTick(() => {
+          const swiperTop = this.$refs.envSwiperTop.$swiper;
+          const swiperThumbs = this.$refs.envSwiperThumbs.$swiper;
+
+          swiperTop.controller.control = swiperThumbs
+          swiperThumbs.controller.control = swiperTop
+      })
     },
 }
 </script>

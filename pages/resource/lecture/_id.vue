@@ -66,7 +66,7 @@ export default {
             title,
             training_time
         } = data.result.data
-        // console.log("data===>", data)
+        console.log("data    sdfsdf===>", data)
         return {
             desc,
             explain,

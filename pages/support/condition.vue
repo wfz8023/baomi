@@ -4,7 +4,7 @@
         <div class="text_description">
             <h1 :class="$store.state.$fontClass + '-title-h2'">{{ title }}</h1>
             <p>
-                {{desc}}
+                {{ desc }}
             </p>
             <div class="decoration"></div>
         </div>
@@ -13,7 +13,7 @@
                 <swiper class="swiper condition_swiper" ref="swiperLeft" :options="swiperOptionTop">
                     <swiper-slide v-for="(condition, index) in conditionList" class="swiper-slide" :key="index">
                         <section class="condition_item">
-                            <img :src="condition.img.url" :alt="condition.img.alt">
+                            <img :src="condition.img" :alt="condition.img">
                             <p :class="$store.state.$fontClass + '-title-h3'">{{ condition.title }}</p>
                         </section>
                     </swiper-slide>
@@ -29,7 +29,7 @@
             <client-only>
                 <swiper class="swiper gallery-thumbs" ref="swiperThumbs" :options="swiperOptionThumbs">
                     <swiper-slide v-for="(thumbs, index) in conditionList" :key="index" class="swiper-slide">
-                        <img :src="thumbs.img.url" :alt="thumbs.img.alt">
+                        <img :src="thumbs.img" :alt="thumbs.img">
                     </swiper-slide>
                     <div class="swiper-button-prev turn" slot="button-prev">
                         <i class="iconfont icon-top"></i>
@@ -60,7 +60,6 @@ export default {
     directives: {
         swiper: directive
     },
-    //support/condition
     async asyncData({
         $axios,
         env
@@ -74,47 +73,20 @@ export default {
             desc,
             keyword
         } = data.result.data;
-        let conditionList = list.map(item => {
-            item.img.url = env.BASE_URL + item.img.url
-            return item
-        })
+
+        // console.log('data====>>>>', data);
 
         return {
             title: seo_t,
             desc,
-            conditionList,
-            /*
-                  swiperOptionTop:{
-                    loop: true,
-                    loopedSlides: conditionList.length + 2
-                  },
-                  swiperOptionThumbs:{
-                    loop: true,
-                    loopedSlides: conditionList.length + 2,
-                    slidesPerView: 2,
-                    slidesPerGroup: 1,
-                    //竖向切换
-                    direction : 'vertical',
-                    // loopFillGroupWithBlank: true,
-                    spaceBetween: 30,
-                    touchRatio: 0.2,
-                    //点击切换
-                    slideToClickedSlide: true,
-                    pagination: {
-                      el: '.swiper-pagination',
-                      dynamicBullets: true
-                    },
-                    navigation: {
-                      nextEl: '.swiper-button-next',
-                      prevEl: '.swiper-button-prev'
-                    }
-                  }
-            */
+            conditionList: list,
         }
     },
     data() {
         return {
-            swiperOptionTop: {
+          swiperOptionTop: {},
+          swiperOptionThumbs:{}
+/*            swiperOptionTop: {
                 loop: true,
                 loopedSlides: 5,
                 navigation: {
@@ -129,7 +101,6 @@ export default {
                 slidesPerGroup: 1,
                 //竖向切换
                 direction: 'vertical',
-                // loopFillGroupWithBlank: true,
                 spaceBetween: 30,
                 touchRatio: 0.2,
                 //点击切换
@@ -142,11 +113,40 @@ export default {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev'
                 },
-            }
+            }*/
         }
     },
     mounted() {
-        this.$nextTick(() => {
+      this.swiperOptionTop={
+        loop: true,
+          loopedSlides: 5,
+          navigation: {
+          nextEl: '.swiper-button-next1',
+            prevEl: '.swiper-button-prev1'
+        },
+      }
+      this.swiperOptionThumbs= {
+          loop: true,
+          loopedSlides: 5,
+          slidesPerView: 2,
+          slidesPerGroup: 1,
+          //竖向切换
+          direction: 'vertical',
+          spaceBetween: 30,
+          touchRatio: 0.2,
+          //点击切换
+          slideToClickedSlide: true,
+          pagination: {
+            el: '.swiper-pagination',
+              dynamicBullets: true
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev'
+          },
+      }
+
+      this.$nextTick(() => {
             const swiperLeft = this.$refs.swiperLeft.$swiper
             const swiperThumbs = this.$refs.swiperThumbs.$swiper
 

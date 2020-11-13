@@ -10,6 +10,7 @@
                 </div>
             </div>
             <div :class="['web_content', $store.state.$fontClass + '-footer-text']">
+                <div class="line"></div>
                 <nav class='footer_nav'>
                     <li :class="['first_link', $store.state.$fontClass + '-content']">
                         <nuxt-link to="/overview">培训中心概况</nuxt-link>
@@ -27,36 +28,36 @@
                     </li>
                 </nav>
                 <nav class="footer_nav">
-                    <li :class="['first_link', $store.state.$fontClass + '-content']">
-                        <nuxt-link to="/">课程资源</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/resource/business">业务实训</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/resource/skill">技能实训</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/resource">精品讲座</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/resource/typical">典型班次</nuxt-link>
-                    </li>
+                  <li :class="['first_link', $store.state.$fontClass + '-content']">
+                    <nuxt-link to="/teacher">师资队伍</nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/teacher">专家风采</nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/teacher/team">教学团队</nuxt-link>
+                  </li>
+                  <li>
+                    <nuxt-link to="/teacher/recruitment">招贤纳士</nuxt-link>
+                  </li>
                 </nav>
                 <nav class="footer_nav">
-                    <li :class="['first_link', $store.state.$fontClass + '-content']">
-                        <nuxt-link to="/teacher">师资简介</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/teacher">专家风采</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/teacher/team">教学团队</nuxt-link>
-                    </li>
-                    <li>
-                        <nuxt-link to="/teacher/recruitment">招贤纳士</nuxt-link>
-                    </li>
-                </nav>
+                      <li :class="['first_link', $store.state.$fontClass + '-content']">
+                          <nuxt-link to="/">课程资源</nuxt-link>
+                      </li>
+                      <li>
+                          <nuxt-link to="/resource/business">业务实训</nuxt-link>
+                      </li>
+                      <li>
+                          <nuxt-link to="/resource/skill">技能实训</nuxt-link>
+                      </li>
+                      <li>
+                          <nuxt-link to="/resource">精品讲座</nuxt-link>
+                      </li>
+                      <li>
+                          <nuxt-link to="/resource/typical">典型班次</nuxt-link>
+                      </li>
+                  </nav>
                 <nav class="footer_nav">
                     <li :class="['first_link', $store.state.$fontClass + '-content']">
                         <nuxt-link to="/support">教学支撑</nuxt-link>
@@ -102,7 +103,7 @@
     </div>
     <section class="copyright">
         <div class="content_wrap">
-            <div class="copyright-" v-html="copyright"></div>
+            <div class="copyright-" v-html="$store.state.config.copyright"></div>
         </div>
     </section>
 </footer>
@@ -142,7 +143,7 @@ export default {
         }
     },
     created() {
-        // console.log("footer==>>>>>>", this.links)
+      console.log('我就看看你为什么没了', this.$store.state.config)
     }
 }
 </script>
@@ -205,7 +206,8 @@ $headerHeight: 1rem;
         // justify-content: flex-end;
         min-height: .94rem;
         width: 13rem;
-      padding: 0 .36rem;
+        margin: 0;
+        //padding: 0 .36rem;
 
         .lk {
             width: 2.76rem;
@@ -262,7 +264,14 @@ footer {
             width: 9.6rem;
             display: flex;
             justify-content: space-between;
-
+            position: relative;
+          .line{
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            top: .45rem;
+            background: #e3e3e3;
+          }
             nav {
                 li {
                     margin-bottom: .2rem;

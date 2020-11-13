@@ -12,7 +12,7 @@
     </div>
     <section class="center_summary">
         <div class="summary">
-            <h1 :class="$store.state.$fontClass + '-title-h2'">{{ home_title || '中心简介' }}</h1>
+            <h1 :class="$store.state.$fontClass + '-title-h2'">{{ intro_name || '中心简介' }}</h1>
             <section v-html="introduction">
             </section>
         </div>
@@ -123,7 +123,8 @@ export default {
             introduction,
             home_title,
             mission_pic,
-            mission
+            mission,
+            intro_name
         } = data.result.index;
 
         const {
@@ -152,7 +153,8 @@ export default {
             //   联系我们电列表
             contact,
             //  组织架构
-            organization
+            organization,
+            intro_name
         }
     },
     data() {
@@ -258,7 +260,7 @@ export default {
         // transform: translate(-50%, -50%);
 
         .mission_class {
-            color: #d9e6f3;
+            //color: #d9e6f3;
             margin-top: .5rem;
             -webkit-line-clamp: 6;
         }
@@ -489,6 +491,8 @@ export default {
         .mission {
             width: 100vw;
             display: block;
+          color: #fff;
+
         }
 
         .context {

@@ -4,7 +4,7 @@
     <p class="summary">{{ desc || '浙江保密学院培训中心位于杭电东岳校区，与西溪国家湿地公园相邻，茶山竹海环绕，青山绿水相伴，是自然与文化的完美结合。' }}</p>
     <div class="decoration"></div>
     <section class="attractions">
-        <div class="item_wrap" v-for="address in addressList" :key="address.id" :style="{background: `url(${address.picture.url}) no-repeat center`}">
+        <div class="item_wrap" v-for="address in addressList" :key="address.id" :style="{background: `url(${address.picture}) no-repeat center`}">
             <div class="item_text_wrap">
                 <section :class="['item_text', $store.state.$fontClass + '-title2']">
                     {{ address.title }}
@@ -26,21 +26,21 @@ export default {
         const {
             data
         } = await $axios.get('/api/support/location');
-        // console.log('address', data)
+        console.log('addressss', data)
         const {
             title,
             list,
             desc,
             keyword
         } = data.result.data;
-        let addressList = list.map(item => {
-            item.picture.url = env.BASE_URL + item.picture.url
-            return item
-        })
+        // let addressList = list.map(item => {
+        //     item.picture.url = env.BASE_URL + item.picture.url
+        //     return item
+        // })
         return {
             title,
             desc,
-            addressList
+            addressList: list
         }
     },
     data() {

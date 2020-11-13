@@ -10,7 +10,7 @@
             <swiper class="site_swiper" :options="siteSwiperOption">
                 <swiper-slide class="swiper-slide" v-for="swiper in item.children" :key="swiper.id">
                     <section class="img_wrap">
-                        <img :src="swiper.img.url" :alt="swiper.img.alt">
+                        <img :src="swiper.img" :alt="swiper.img">
                         <div class="desc_wrap">
                             <div class="desc">
                                 <h2>{{ swiper.name }}</h2>
@@ -66,13 +66,14 @@ export default {
         let sportsSwiperList = result.data.list;
         const sportSeo = result.data.seo
         //数组存在时进行 数组操作 显示对应服务上的图片
-        sportsSwiperList.forEach(item => {
-            item.children && item.children.map(child => {
-                child.img.url = child.img ? env.BASE_URL + child.img.url : child.img.url
-                return child
-            })
-        })
-        console.log('sportsSwiperList', sportsSwiperList)
+        // sportsSwiperList.forEach(item => {
+        //     item.children && item.children.map(child => {
+        //         child.img.url = child.img ? env.BASE_URL + child.img.url : child.img.url
+        //         return child
+        //     })
+        // })
+        // console.log('sportsSwiperList', sportsSwiperList)
+
         return {
             bannerImg,
             banner_title_cn,

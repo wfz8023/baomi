@@ -8,11 +8,11 @@
                         <dd>
                             <img :src="item.img.url" :alt="item.img.alt">
                             <div class="msg">
-                                <h2 :class="[$store.state.$fontClass + '-title2', 'one-ellipsis']">{{ item.title }}</h2>
+                                <h2 :class="[$store.state.$fontClass + '-title2']">{{ item.title }}</h2>
                             </div>
                         </dd>
                         <dt>
-                            <h3 :class="$store.state.$fontClass + '-title-h3'">{{ item.title }}</h3>
+                            <h3 :class="[$store.state.$fontClass + '-title-h3', 'one-ellipsis']">{{ item.title }}</h3>
                             <div class="many-ellipsis" v-html="item.desc">
                             </div>
                         </dt>

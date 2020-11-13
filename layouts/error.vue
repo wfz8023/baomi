@@ -15,8 +15,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div {
-    padding-top: 1rem;
-    background: red;
-}
+//div {
+//    padding-top: 1rem;
+//    background: red;
+//}
 </style>

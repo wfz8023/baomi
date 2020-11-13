@@ -8,12 +8,12 @@
                         <dd>
                             <img :src="item.img.url" :alt="item.img.alt">
                             <div class="msg">
-                                <h2 :class="[$store.state.$fontClass + '-title2', 'one-ellipsis']">{{ item.title }}</h2>
+                                <h2 :class="[$store.state.$fontClass + '-title2']">{{ item.title }}</h2>
                                 <!--                  <p>了解信息安全的基础理论解析管理要求</p>-->
                             </div>
                         </dd>
                         <dt>
-                            <h3 :class="$store.state.$fontClass + '-title-h3'">{{ item.title }}</h3>
+                            <h3 :class="[$store.state.$fontClass + '-title-h3', 'one-ellipsis']">{{ item.title }}</h3>
                             <div class="many-ellipsis" v-html="item.desc">
                             </div>
                         </dt>
@@ -117,23 +117,7 @@ export default {
             } = await this.$axios.get(`/api/resource/classes/class/${tabIndex}?page=${val}&pszie=${pszie}`);
             this.lectureList = data.result.data.data
         }
-
-    },
-    async created() {
-        // // const lectureClass = await this.$axios.get('/api/resource/chair/class')
-        // // console.log('精品奖座分类/api/resource/classes/class',lectureClass.data)
-        // //   const businessClass = await this.$axios.get('/api/resource/business')
-        // //   console.log('业务实训分类/api/resource/business',businessClass.data)
-        // //   const skill = await this.$axios.get('/api/resource/skill')
-        // // const lectureList = await this.$axios.get('/api/resource/chair/class/1?page=1&pszie=15')
-        // // console.log('精品奖座列表', lectureList.data)///chair/class/1?page=1&pszie=15
-        // // console.log('技能实训/api/resource/skill',skill.data)
-        // const typical = await this.$axios.get('/api/resource/classes/class')
-        // console.log('典型分类/api/resource/classes/class', typical.data)
-        // const typicalList = await this.$axios.get('/api/resource/classes/class/1?page=1&pszie=15')
-        // console.log('典型分类/api/resource/classes/class', typicalList.data)
-    },
-
+    }
 }
 </script>
 

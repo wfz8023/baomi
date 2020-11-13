@@ -17,7 +17,7 @@
             </div>
             <div class="teacher_selected">
                 <h3 :class="$store.state.$fontClass + 'littleFont-title-h3' ">{{ teacher.name }}</h3>
-                <div class="job">{{ teacher.job }}</div>
+                <div class="job one-ellipsis">{{ teacher.job }}</div>
                 <div class="many-ellipsis" v-html="teacher.desc"></div>
             </div>
         </div>
@@ -84,7 +84,7 @@ $contentWidth: 14.6rem;
     .pic_wrap {
         width: $picWidth;
         height: $picWidth;
-        background: #363638;
+        //background: #363638;
         margin-right: 1.1rem;
 
         img {
@@ -167,7 +167,8 @@ $contentWidth: 14.6rem;
                 padding: 0;
                 margin: 0;
                 border: 0;
-                height: .7rem;
+                height: .6rem;
+                //height: .7rem;
                 overflow: hidden;
             }
         }
@@ -207,6 +208,16 @@ $contentWidth: 14.6rem;
 
         .teacher_item {
             margin-right: .2rem;
+          height: 2.4rem;
+            .teacher_selected{
+              .many-ellipsis{
+                height: auto;
+                //height: .7rem!important;
+                //padding-bottom: .2rem;
+                -webkit-line-clamp: 2!important;
+              }
+            }
+
         }
 
         .teacher_item:nth-of-type(2n) {

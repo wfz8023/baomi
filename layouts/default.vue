@@ -16,43 +16,6 @@ export default {
     components: {
         Header,
         Footer,
-        // loading
-    },
-    async asyncData({
-        $axios
-    }) {
-        const {
-            data
-        } = await $axios.get('/api/config');
-        // console.log('asyncData===>>>>>>>', data)
-
-        return {
-            navList: [{
-                    name: '首页',
-                    link: '/'
-                },
-                {
-                    name: '培训中心概况',
-                    link: '/overview'
-                },
-                {
-                    name: '资讯中心',
-                    link: '/news'
-                },
-                {
-                    name: '师资队伍',
-                    link: '/teacher'
-                },
-                {
-                    name: '课程资源',
-                    link: '/resource'
-                },
-                {
-                    name: '教学支撑',
-                    link: '/support'
-                },
-            ],
-        }
     },
     data() {
         return {
@@ -89,12 +52,12 @@ export default {
     },
     head() {
         return {
-            title: '保密学院',
-            meta: [{
-                hid: 'description',
-                name: 'description',
-                content: 'desc'
-            }]
+            // title: '保密学院',
+            // meta: [{
+            //     hid: 'description',
+            //     name: 'description',
+            //     content: 'desc'
+            // }]
         }
     },
     async created() {
@@ -105,13 +68,6 @@ export default {
         this.config = data.result;
         this.homeLogo = data.result.top_logo_home.url;
         this.otherLogo = data.result.top_logo_other.url
-        // this.config.links.map(item => {
-        //     console.log(typeof item.img)
-        //     if (typeof item.img == 'string') {
-        //         item.img = JSON.parse(item.img)
-        //     }
-        //     return item
-        // })
     },
     methods: {
         // 判断是否是首次打开页面; 如果是,则开启首次加载动画

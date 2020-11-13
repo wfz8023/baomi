@@ -78,7 +78,6 @@
                 </dd>
                 <nuxt-link class="first_news" v-if="news[newsIndex].children[0]" :to="{name: 'news-detail-id', params:{id: news[newsIndex].children[0].id}}">
                 </nuxt-link>
-
             </dl>
             <section class='news_list'>
                 <nav class="news">
@@ -134,7 +133,7 @@
                         </div>
                     </section>
                     <!-- <div v-if="resource.chair.info[selectChairIndex].children"> -->
-                    <course-shutters :resource-id="selectedResourcesId" :background-path="resource.chair.index.home_bg" :icon="resource.chair.index.home_icon" :class-shutters="resource.chair.info"></course-shutters>
+                    <course-shutters :home-bg="resource.chair.index.home_bg" :resource-id="selectedResourcesId" :background-path="resource.chair.index.home_bg" :icon="resource.chair.index.home_icon" :class-shutters="resource.chair.info"></course-shutters>
                     <!-- </div> -->
                 </div>
             </div>
@@ -160,7 +159,7 @@
                         </nav>
                     </section>
                     <!-- <div v-if="resource.classes.info[selectClassesIndex].children"> -->
-                    <course-shutters :type="'class'" :resource-id="selectedClassesId" :background-path="resource.classes.index.home_bg" :icon="resource.classes.index.home_icon" :class-shutters="resource.classes.info"></course-shutters>
+                    <course-shutters :type="'class'" :home-bg="resource.classes.index.home_bg" :resource-id="selectedClassesId" :background-path="resource.classes.index.home_bg" :icon="resource.classes.index.home_icon" :class-shutters="resource.classes.info"></course-shutters>
                     <!-- </div> -->
                 </div>
             </div>
@@ -180,8 +179,8 @@
                             <img class="other_pic" :src="showTeacher.portrait" :alt="showTeacher.name">
                         </div>
                         <section class="teacher_pic_text">
-                            <h3 :class="$store.state.$fontClass + '-title-h4'">{{ showTeacher.name }}</h3>
-                            <p class="teacher_level">{{ showTeacher.job }}</p>
+                            <h3 :class="$store.state.$fontClass + '-title-h4'">{{ showTeacher.name }} <span style="color: #333;font-size: .24rem;">{{ showTeacher.job }}</span></h3>
+<!--                            <p class="teacher_level"></p>-->
                             <div class="teacher_summary many-ellipsis" v-html="showTeacher.desc"></div>
                             <know-more href="/" title="了解更多" name="teacher" class-name="red_no_border"></know-more>
                         </section>
@@ -292,6 +291,7 @@ import {
     SwiperSlide,
     directive
 } from 'vue-awesome-swiper'
+import axios from "axios";
 
 export default {
     name: 'index',
@@ -308,6 +308,21 @@ export default {
     directives: {
         swiper: directive
     },
+  fetch({ store, $axios, params, app }){
+    console.log(store)
+    $axios.get('/api/config').then( ({data}) => {
+      if (data.code === 200) {
+        const config = {
+          ...data.result,
+        }
+        // console.log('fetch 首页 获取config', config)
+
+        store.commit('setConfig', config)
+      } else {
+        console.log('%c 请求失败：' + res.data.result, 'color:#ff0000;')
+      }
+    })
+  },
     async asyncData({
         $axios,
         env,
@@ -317,8 +332,10 @@ export default {
         const {
             data
         } = await $axios.get('/api/home')
-        console.log(data)
-        let {
+        console.log("data0sss", data)
+      app.head.title = store.state.config.title
+      // "浙江保密学院培训中心"
+      let {
             banner,
             desc,
             news,
@@ -335,8 +352,7 @@ export default {
         })
         const maxNewsList = news.slice(0, 4)
         // news.length = 5;
-        // console.log()
-        app.head.title = "浙江保密学院培训中心"
+        console.log(data.result)
         // 新闻分类列表
         store.commit('setNewsClassList', news)
         // 老师简介 图片加域名
@@ -346,7 +362,7 @@ export default {
         })
         // 默认显示第一个老师
         let showTeacher = teachers[0];
-        console.log('index---->>>', teachers)
+        // console.log('index---->>>', teachers)
         // let showNewsCase = news[]
         let newsClassList = [{
                 name: '新闻动态',
@@ -416,122 +432,133 @@ export default {
     },
     head() {
         return {
-            title: '浙江保密学院培训中心'
+            title: this.$store.state.config.title,
+            meta: [
+              {
+                hid: 'description',
+                name: 'description',
+                content: this.$store.state.config.desc
+              },
+              {
+                hid: "keywords",
+                name: "keywords",
+                content: this.$store.state.config.keyword
+              },
+            ]
         }
     },
     data() {
         return {
-            isShowMenu: false,
-            activeShutters: 1,
-            newsIndex: 0,
-            shutters: [{
-                    id: 1
-                },
-                {
-                    id: 2
-                },
-                {
-                    id: 3
-                },
-                {
-                    id: 4
-                },
-            ],
-            swiperBanner: {
-                // loop: true,
-                // autoplay: {
-                //     delay: 3000
-                // },
-                pagination: {
-                    el: '.swiper-pagination1',
-                    // dynamicBullets: true
-                }
-            },
-            swiperTeacher: {
-                slidesPerView: 4,
-                spaceBetween: 15,
-                // pagination: {
-                //     el: '.swiper-pagination',
-                //     clickable: true
-                // },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                    disabledClass: 'my-button-disabled'
-                },
-                on: {
-                    slideChange: function () {
+          isShowMenu: false,
+          activeShutters: 1,
+          newsIndex: 0,
+          shutters: [{
+                  id: 1
+              },
+              {
+                  id: 2
+              },
+              {
+                  id: 3
+              },
+              {
+                  id: 4
+              },
+          ],
+          swiperBanner: {
+              // loop: true,
+              // autoplay: {
+              //     delay: 3000
+              // },
+              pagination: {
+                  el: '.swiper-pagination1',
+                  // dynamicBullets: true
+              }
+          },
+          swiperTeacher: {
+              loop: true,
+              slidesPerView: 4,
+              spaceBetween: 15,
+              // pagination: {
+              //     el: '.swiper-pagination',
+              //     clickable: true
+              // },
+              slideToClickedSlide: true,
+              navigation: {
+                  nextEl: '.swiper-button-next',
+                  prevEl: '.swiper-button-prev',
+                  disabledClass: 'my-button-disabled'
+              },
+              on: {
+                  slideChange: function () {
 
-                    },
-                },
-            },
-            activeIndex: 0
+                  },
+              },
+          },
+          activeIndex: 0
         }
     },
-    async mounted() {
-        const {
-            data
-        } = await this.$axios.get('/api/home')
-        console.log(data)
+    mounted() {
+      // console.log('ddddddddddddddddd', document.title)
+      // document.title = "浙江保密学院培训中心"
+      // document
+        // .title = this.$store.state.config.title
     },
     methods: {
-        showPhoneMenu() {
-            this.isShowMenu = !this.isShowMenu
-        },
-        selectNewsClass(newsIndex) {
-            // this.selectedNewsId = id;
-            // console.log(newsIndex)
-            this.newsIndex = newsIndex;
-        },
-        // 精品课程分类id
-        selectedResources(id, index) {
-            this.selectChairIndex = index;
-            this.selectedResourcesId = id;
-            // console.log('selectedResources', this.resource.chair.info[index].children.length < 1)
-        },
-        // 典型班次
-        selectedClasses(id, index) {
-            this.selectedClassesId = id;
-            this.selectClassesIndex = index;
-        },
-        switchShutter(id) {
-            this.activeShutters = id
-        },
-        timestampToTime(timestamp) {
-            let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-            let Y = date.getFullYear() + '-';
-            let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-            let D = date.getDate() + ' ';
-            let h = date.getHours() + ':';
-            let m = date.getMinutes() + ':';
-            let s = date.getSeconds();
-            M = M < 10 ? '0' + M : M;
-            D = D < 10 ? '0' + D : D;
+          showPhoneMenu() {
+              this.isShowMenu = !this.isShowMenu
+          },
+          selectNewsClass(newsIndex) {
+              this.newsIndex = newsIndex;
+          },
+          // 精品课程分类id
+          selectedResources(id, index) {
+              this.selectChairIndex = index;
+              this.selectedResourcesId = id;
+          },
+          // 典型班次
+          selectedClasses(id, index) {
+              this.selectedClassesId = id;
+              this.selectClassesIndex = index;
+          },
+          switchShutter(id) {
+              this.activeShutters = id
+          },
+          timestampToTime(timestamp) {
+              let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+              let Y = date.getFullYear() + '-';
+              let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+              let D = date.getDate() + ' ';
+              let h = date.getHours() + ':';
+              let m = date.getMinutes() + ':';
+              let s = date.getSeconds();
+              M = M < 10 ? '0' + M : M;
+              D = D < 10 ? '0' + D : D;
 
-            return M + D;
-        },
-        timestampToYear(timestamp) {
-            let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-            let Y = date.getFullYear() + '-';
-            let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-            let D = date.getDate() + ' ';
-            let h = date.getHours() + ':';
-            let m = date.getMinutes() + ':';
-            let s = date.getSeconds();
-            Y = Y < 10 ? '0' + Y : Y;
-            M = M < 10 ? '0' + M : M;
-            D = D < 10 ? '0' + D : D;
+              return M + D;
+          },
+          timestampToYear(timestamp) {
+              let date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+              let Y = date.getFullYear() + '-';
+              let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+              let D = date.getDate() + ' ';
+              let h = date.getHours() + ':';
+              let m = date.getMinutes() + ':';
+              let s = date.getSeconds();
+              Y = Y < 10 ? '0' + Y : Y;
+              M = M < 10 ? '0' + M : M;
+              D = D < 10 ? '0' + D : D;
 
-            return Y + M + D;
-        },
-        handleSwiperSlideClick(index, reallyIndex) {
-            this.showTeacher = this.teachers[index]
-            console.log(index)
-        },
-        handleSwiperChange(index) {
-            console.log(index)
-        },
-    }
+              return Y + M + D;
+          },
+          handleSwiperSlideClick(index, reallyIndex) {
+            // console.log(reallyIndex)
+            this.showTeacher = this.teachers[reallyIndex]
+          },
+          handleSwiperChange(index) {
+              console.log(index)
+          },
+      }
 }
 </script>
 
